@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="567bbaae-bd38-4ed0-a770-d49a5bfb003c" name="risingTask" url="http://danielyang.site">
+        <fileTransfer rootFolder="/var/www/ycm_risingTask_boot" accessType="SFTP" host="3.37.215.63" port="22" sshConfigId="cc96e617-90ef-45ba-96b5-12349f3661a4" sshConfig="ubuntu@3.37.215.63:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

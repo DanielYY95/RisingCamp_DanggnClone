@@ -1,0 +1,86 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.2'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+compileJava.options.encoding = 'UTF-8'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.jetbrains:annotations:19.0.0'
+
+
+    // Spring Boot Starter
+    testImplementation ('org.springframework.boot:spring-boot-starter-test')
+
+    // Lombok
+    implementation ('org.projectlombok:lombok')
+    compileOnly ('org.projectlombok:lombok:1.18.16')
+    annotationProcessor ('org.projectlombok:lombok:1.18.16')
+
+    // DB
+    runtimeOnly ('mysql:mysql-connector-java') //mysql8
+    //runtimeOnly 'mysql:mysql-connector-java:5.1.47' //mysql5
+    implementation ('org.springframework.boot:spring-boot-starter-jdbc')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa') //mysql 5버전의 경우 삭제.
+
+    // mybatis
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
+
+
+    // Web
+    implementation ('org.springframework.boot:spring-boot-starter-web')
+
+    // Security, Authentication
+    implementation('org.springframework.boot:spring-boot-starter-security')
+    compile(group: 'io.jsonwebtoken', name: 'jjwt', version: '0.7.0')
+    compile('io.jsonwebtoken:jjwt:0.9.0')
+
+    implementation('org.springframework.boot:spring-boot-starter')
+    compile('org.springframework.boot:spring-boot-starter-web')
+
+    // JWT
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
+    // 유효성(JSR 380)
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+
+    // OAuth2
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-oauth2-client
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.6.1'
+
+
+    // Dev tools
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools
+    implementation 'org.springframework.boot:spring-boot-devtools:2.7.0'
+
+    // Gson
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    implementation 'com.google.code.gson:gson:2.8.9'
+
+
+
+}
+
+test {
+    useJUnitPlatform()
+}
