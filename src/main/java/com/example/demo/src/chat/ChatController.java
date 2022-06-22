@@ -36,25 +36,25 @@ public class ChatController {
         this.jwtService = jwtService;
     }
 
-    @GetMapping("/rooms")
-    public BaseResponse<List<GetChatRoomsRes>> getChatRooms(@RequestParam Integer memberId){
+    @GetMapping("/{memberid}/rooms")
+    public BaseResponse<List<GetChatRoomsRes>> getChatRooms(@RequestParam Integer memberid){
 
-        if(isEmpty(memberId) || !(checkIdFormal(memberId)))
+        if(isEmpty(memberid) || !(checkIdFormal(memberid)))
             return new BaseResponse<>(MEMBERS_EMPTY_MEMBER_ID);
 
 
         try{
 
             // jwt에서 id 추출
-            int memberIdByJwt = jwtService.getMemberId();
+            int memberidByJwt = jwtService.getMemberId();
 
             // 유효성 검사: request로 받은 id와 추출한 id 비교
-            if(memberId != memberIdByJwt){
+            if(memberid != memberidByJwt){
 
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            List<GetChatRoomsRes> result = provider.getChatRooms(memberId);
+            List<GetChatRoomsRes> result = provider.getChatRooms(memberid);
             return new BaseResponse<>(result);
 
         }catch (BaseException exception){

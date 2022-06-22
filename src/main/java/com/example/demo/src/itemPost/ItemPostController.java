@@ -273,14 +273,9 @@ public class ItemPostController {
 
 
     @GetMapping("/{itempostid}/status")
-    public BaseResponse<GetItemPostReadyUpdateRes> getItemPostReadyUpdate(@PathVariable Integer itempostid, @RequestParam Integer memberId){
+    public BaseResponse<GetItemPostReadyUpdateRes> getItemPostReadyUpdate(@PathVariable Integer itempostid){
 
-        // 유효성 검사 회원고유번호
-        if (isEmpty(memberId))
-            return new BaseResponse<>(MEMBERS_EMPTY_MEMBER_ID);
 
-        if(!checkIdFormal(memberId))
-            return new BaseResponse<>(INVALID_MEMBER);
 
         // 유효성 검사 게시물 고유번호
         if (isEmpty(itempostid))
@@ -289,18 +284,15 @@ public class ItemPostController {
         if(!checkIdFormal(itempostid))
             return new BaseResponse<>(INVALID_POST);
 
-
-        GetItemPostReadyUpdateReq req = new GetItemPostReadyUpdateReq(itempostid, memberId);
-
         try{
 
+
+
             // jwt에서 id 추출
-            int memberIdByJwt = jwtService.getMemberId();
+            int memberid = jwtService.getMemberId();
 
-            if(memberId != memberIdByJwt){
+            GetItemPostReadyUpdateReq req = new GetItemPostReadyUpdateReq(itempostid, memberid);
 
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
 
             GetItemPostReadyUpdateRes result = provider.getItemPostReadyUpdate(req);
 
@@ -382,16 +374,8 @@ public class ItemPostController {
 
 }
 
-@GetMapping ("/sale/{memberid}")
-public BaseResponse<List<GetItemPostSellRes>> getItemPostSell(@PathVariable Integer memberid, @RequestParam Integer postId){
-
-
-    // 유효성 검사 회원고유번호
-    if (isEmpty(memberid))
-        return new BaseResponse<>(MEMBERS_EMPTY_MEMBER_ID);
-
-    if(!checkIdFormal(memberid))
-        return new BaseResponse<>(INVALID_MEMBER);
+@GetMapping ("/sale/{postid}")
+public BaseResponse<List<GetItemPostSellRes>> getItemPostSell(@PathVariable Integer postId){
 
     // 유효성 검사 게시물 고유번호
     if (isEmpty(postId))
@@ -402,18 +386,12 @@ public BaseResponse<List<GetItemPostSellRes>> getItemPostSell(@PathVariable Inte
 
 
 
-    GetItemPostSellReq req = new GetItemPostSellReq(postId, memberid);
-
     try{
 
         // jwt에서 id 추출
-        int memberIdByJwt = jwtService.getMemberId();
+        int memberid = jwtService.getMemberId();
 
-        // 유효성 검사: request로 받은 id와 추출한 id 비교
-        if(memberid != memberIdByJwt){
-
-            return new BaseResponse<>(INVALID_USER_JWT);
-        }
+        GetItemPostSellReq req = new GetItemPostSellReq(postId, memberid);
 
        List<GetItemPostSellRes> result = provider.getItemPostSell(req);
 
