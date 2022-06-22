@@ -22,7 +22,7 @@ import static com.example.demo.utils.ValidationRegex.*;
 
 
 @RestController
-@RequestMapping("/app/itemPosts")
+        @RequestMapping("/app/itemposts")
 public class ItemPostController {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -42,15 +42,15 @@ public class ItemPostController {
         this.jwtService = jwtService;
     }
 
-    @GetMapping("/{itemPostId}")
-    public BaseResponse<GetItemPostRes> getItemPost(@PathVariable Integer itemPostId){
+    @GetMapping("/{itempostid}")
+    public BaseResponse<GetItemPostRes> getItemPost(@PathVariable Integer itempostid){
 
         try {
             // jwt에서 id 추출
             int memberIdByJwt = jwtService.getMemberId();
 
 
-            GetItemPostReq req = new GetItemPostReq(memberIdByJwt, itemPostId);
+            GetItemPostReq req = new GetItemPostReq(memberIdByJwt, itempostid);
 
             GetItemPostRes res = provider.getItemPost(req);
 
@@ -159,7 +159,7 @@ public class ItemPostController {
 
     }
 
-    @PatchMapping("/pull")
+    @PatchMapping("/pullstatus")
     public BaseResponse<PatchItemPostRes> patchItemPostPull(@RequestBody PatchItemPostReq req){
 
 
@@ -197,7 +197,7 @@ public class ItemPostController {
         }
     }
 
-    @PatchMapping("/hidden")
+    @PatchMapping("/openstatus")
     public BaseResponse<PatchItemPostRes> patchItemPostHidden(@RequestBody PatchItemPostReq req){
 
 
@@ -235,7 +235,7 @@ public class ItemPostController {
         }
     }
 
-    @PatchMapping("/delete")
+    @PatchMapping("/status")
     public BaseResponse<PatchItemPostRes> patchItemPostDelete(@RequestBody PatchItemPostReq req){
 
         // 유효성 검사 회원고유번호
@@ -272,8 +272,8 @@ public class ItemPostController {
     }
 
 
-    @GetMapping("/{itemPostId}/update")
-    public BaseResponse<GetItemPostReadyUpdateRes> getItemPostReadyUpdate(@PathVariable Integer itemPostId, @RequestParam Integer memberId){
+    @GetMapping("/{itempostid}/status")
+    public BaseResponse<GetItemPostReadyUpdateRes> getItemPostReadyUpdate(@PathVariable Integer itempostid, @RequestParam Integer memberId){
 
         // 유효성 검사 회원고유번호
         if (isEmpty(memberId))
@@ -283,14 +283,14 @@ public class ItemPostController {
             return new BaseResponse<>(INVALID_MEMBER);
 
         // 유효성 검사 게시물 고유번호
-        if (isEmpty(itemPostId))
+        if (isEmpty(itempostid))
             return new BaseResponse<>(REQUEST_ERROR);
 
-        if(!checkIdFormal(itemPostId))
+        if(!checkIdFormal(itempostid))
             return new BaseResponse<>(INVALID_POST);
 
 
-        GetItemPostReadyUpdateReq req = new GetItemPostReadyUpdateReq(itemPostId, memberId);
+        GetItemPostReadyUpdateReq req = new GetItemPostReadyUpdateReq(itempostid, memberId);
 
         try{
 
@@ -382,15 +382,15 @@ public class ItemPostController {
 
 }
 
-@GetMapping ("/sell/{memberId}")
-public BaseResponse<List<GetItemPostSellRes>> getItemPostSell(@PathVariable Integer memberId, @RequestParam Integer postId){
+@GetMapping ("/sale/{memberid}")
+public BaseResponse<List<GetItemPostSellRes>> getItemPostSell(@PathVariable Integer memberid, @RequestParam Integer postId){
 
 
     // 유효성 검사 회원고유번호
-    if (isEmpty(memberId))
+    if (isEmpty(memberid))
         return new BaseResponse<>(MEMBERS_EMPTY_MEMBER_ID);
 
-    if(!checkIdFormal(memberId))
+    if(!checkIdFormal(memberid))
         return new BaseResponse<>(INVALID_MEMBER);
 
     // 유효성 검사 게시물 고유번호
@@ -402,7 +402,7 @@ public BaseResponse<List<GetItemPostSellRes>> getItemPostSell(@PathVariable Inte
 
 
 
-    GetItemPostSellReq req = new GetItemPostSellReq(postId, memberId);
+    GetItemPostSellReq req = new GetItemPostSellReq(postId, memberid);
 
     try{
 
@@ -410,7 +410,7 @@ public BaseResponse<List<GetItemPostSellRes>> getItemPostSell(@PathVariable Inte
         int memberIdByJwt = jwtService.getMemberId();
 
         // 유효성 검사: request로 받은 id와 추출한 id 비교
-        if(memberId != memberIdByJwt){
+        if(memberid != memberIdByJwt){
 
             return new BaseResponse<>(INVALID_USER_JWT);
         }
@@ -427,7 +427,7 @@ public BaseResponse<List<GetItemPostSellRes>> getItemPostSell(@PathVariable Inte
 }
 
 
-@PatchMapping("/sell")
+@PatchMapping("/sale")
 public BaseResponse<PatchItemPostSellRes> patchItemPostSell(@RequestBody PatchItemPostSellReq req){
 
     // 유효성 검사 회원고유번호

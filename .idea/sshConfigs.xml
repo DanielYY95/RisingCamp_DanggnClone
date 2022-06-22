@@ -2,7 +2,7 @@
 <project version="4">
   <component name="SshConfigs">
     <configs>
-      <sshConfig host="3.37.215.63" id="cc96e617-90ef-45ba-96b5-12349f3661a4" keyPath="C:\Users\A\OneDrive - UOS\risingTask.pem" port="22" nameFormat="DESCRIPTIVE" username="ubuntu" useOpenSSHConfig="true" />
+      <sshConfig host="3.37.215.63" id="fdfae7f3-8277-4900-9c47-e842b061b77b" keyPath="C:\Users\A\OneDrive - UOS\risingTask.pem" port="22" nameFormat="DESCRIPTIVE" username="ubuntu" useOpenSSHConfig="true" />
     </configs>
   </component>
 </project>

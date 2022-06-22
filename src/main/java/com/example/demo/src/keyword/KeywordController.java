@@ -39,18 +39,18 @@ public class KeywordController {
     // @@ 일때 throw new BaseException
 
 
-    @GetMapping("/set/{memberId}")
-    public BaseResponse<List<GetKeywordSetRes>> getKeywordSet(@PathVariable Integer memberId){
+    @GetMapping("/set/{memberid}")
+    public BaseResponse<List<GetKeywordSetRes>> getKeywordSet(@PathVariable Integer memberid){
 
         // 회원번호 빈 값, 유효한지
-        if(isEmpty(memberId))
+        if(isEmpty(memberid))
             return new BaseResponse<>(MEMBERS_EMPTY_MEMBER_ID);
 
-        if(!(checkIdFormal(memberId)))
+        if(!(checkIdFormal(memberid)))
             return new BaseResponse<>(INVALID_MEMBER);
 
         try {
-            List<GetKeywordSetRes> res = provider.getKeywordSet(memberId);
+            List<GetKeywordSetRes> res = provider.getKeywordSet(memberid);
 
             return new BaseResponse<>(res);
         }catch (BaseException exception) {
@@ -60,18 +60,18 @@ public class KeywordController {
 
     }
 
-    @GetMapping("/alarms/{memberId}")
-    public BaseResponse<List<GetKeywordAlarmsRes>> getKeywordAlarms(@PathVariable Integer memberId) {
+    @GetMapping("/alarms/{memberid}")
+    public BaseResponse<List<GetKeywordAlarmsRes>> getKeywordAlarms(@PathVariable Integer memberid) {
 
         // 회원번호 빈 값, 유효한지
-        if(isEmpty(memberId))
+        if(isEmpty(memberid))
             return new BaseResponse<>(MEMBERS_EMPTY_MEMBER_ID);
 
-        if(!(checkIdFormal(memberId)))
+        if(!(checkIdFormal(memberid)))
             return new BaseResponse<>(INVALID_MEMBER);
 
         try{
-            List<GetKeywordAlarmsRes> res = provider.getKeywordAlarms(memberId);
+            List<GetKeywordAlarmsRes> res = provider.getKeywordAlarms(memberid);
 
             return new BaseResponse<>(res);
 

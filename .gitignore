@@ -2,3 +2,13 @@
 /.gradle/
 /out/
 /out/production/classes/
+
+
+
+
+# APP 환경설정
+application.yml
+
+
+# 시크릿 키 파일
+Secret.java

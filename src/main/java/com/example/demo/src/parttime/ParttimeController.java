@@ -21,19 +21,19 @@ public class ParttimeController {
 
 
 
-    @GetMapping("/{parttimeId}")
-    public BaseResponse<GetParttimePostRes> getParttimePost(@PathVariable Integer parttimeId, @RequestParam("memberId") Integer memberId){
+    @GetMapping("/{parttimeid}")
+    public BaseResponse<GetParttimePostRes> getParttimePost(@PathVariable Integer parttimeid, @RequestParam("memberId") Integer memberId){
         
         // 빈 값과 형식 검사
         
         if(isEmpty(memberId) || !(checkIdFormal(memberId)))
             return new BaseResponse<>(MEMBERS_EMPTY_MEMBER_ID);
 
-        if(isEmpty(parttimeId) || !(checkIdFormal(parttimeId)))
+        if(isEmpty(parttimeid) || !(checkIdFormal(parttimeid)))
             return new BaseResponse<>(INVALID_POST);
 
 
-        GetParttimePostReq req = new GetParttimePostReq(memberId, parttimeId);
+        GetParttimePostReq req = new GetParttimePostReq(memberId, parttimeid);
 
         try{
             GetParttimePostRes result = provider.getParttimePost(req);

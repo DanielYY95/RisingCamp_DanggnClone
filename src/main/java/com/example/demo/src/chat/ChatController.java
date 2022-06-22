@@ -63,14 +63,14 @@ public class ChatController {
     }
 
 
-    @GetMapping("/{roomNo}")
-    public BaseResponse<GetChatRoomRes> getChatRoom(@PathVariable Integer roomNo, @RequestParam Integer memberId){
+    @GetMapping("/{memberid}/{roomno}")
+    public BaseResponse<GetChatRoomRes> getChatRoom(@PathVariable Integer memberid, @PathVariable Integer roomno){
 
-        if(isEmpty(roomNo) || !(checkIdFormal(roomNo)))
+        if(isEmpty(roomno) || !(checkIdFormal(roomno)))
             return new BaseResponse<>(INVALID_CHATROOM);
 
 
-        if(isEmpty(memberId) || !(checkIdFormal(memberId)))
+        if(isEmpty(memberid) || !(checkIdFormal(memberid)))
             return new BaseResponse<>(MEMBERS_EMPTY_MEMBER_ID);
 
 
@@ -80,12 +80,12 @@ public class ChatController {
             int memberIdByJwt = jwtService.getMemberId();
 
             // 유효성 검사: request로 받은 id와 추출한 id 비교
-            if(memberId != memberIdByJwt){
+            if(memberid != memberIdByJwt){
 
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            GetChatRoomRes result = provider.getChatRoom(roomNo, memberId);
+            GetChatRoomRes result = provider.getChatRoom(roomno, memberid);
             return new BaseResponse<>(result);
 
         }catch (BaseException exception){
@@ -94,18 +94,18 @@ public class ChatController {
 
     }
 
-    @GetMapping("/{itemPostId}/{memberId}")
-    public BaseResponse<GetChatRoomRes> getChatRoomReady(@PathVariable Integer itemPostId, @PathVariable Integer memberId){
+    @GetMapping("/{itempostid}/{memberid}")
+    public BaseResponse<GetChatRoomRes> getChatRoomReady(@PathVariable Integer itempostid, @PathVariable Integer memberid){
 
 
-        if(isEmpty(itemPostId) || !(checkIdFormal(itemPostId)))
+        if(isEmpty(itempostid) || !(checkIdFormal(itempostid)))
             return new BaseResponse<>(INVALID_POST);
 
-        if(isEmpty(memberId) || !(checkIdFormal(memberId)))
+        if(isEmpty(memberid) || !(checkIdFormal(memberid)))
             return new BaseResponse<>(MEMBERS_EMPTY_MEMBER_ID);
 
         try{
-            GetChatRoomRes result = provider.getChatRoomReady(itemPostId, memberId);
+            GetChatRoomRes result = provider.getChatRoomReady(itempostid, memberid);
             return new BaseResponse<>(result);
 
         }catch (BaseException exception){
@@ -118,7 +118,7 @@ public class ChatController {
 
 
 
-    @PostMapping ("/chat")
+    @PostMapping ("")
     public BaseResponse<GetChatRoomRes> postChat(@RequestBody PostChatReq req){
 
         // 빈값인지 확인

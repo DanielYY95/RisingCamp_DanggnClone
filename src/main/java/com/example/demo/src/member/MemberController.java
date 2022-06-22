@@ -100,7 +100,7 @@ public class MemberController {
     // 회원가입할 때 입력해야되는 데이터
         // 현재 위치, 전화번호, 인증번호, 닉네임, 프로필 사진
 
-    @PostMapping("/reg")
+    @PostMapping("")
     public BaseResponse<PostMemberRes> createUser(@RequestBody PostMemberReq postMemberReq){
 
 
@@ -165,17 +165,17 @@ public class MemberController {
         // @RequestBody 를 쓰면 post headers 에서 application/json을 써야한다.
 
 
-    @GetMapping("")
-    public BaseResponse<GetProfileRes> getProfile(@RequestParam("memberId") Integer memberId){
+    @GetMapping("{memberid}")
+    public BaseResponse<GetProfileRes> getProfile(@PathVariable Integer memberid){
         
         // 회원 고유번호
         
-        if(isEmpty(memberId) || !(checkIdFormal(memberId)))
+        if(isEmpty(memberid) || !(checkIdFormal(memberid)))
             return new BaseResponse<>(MEMBERS_EMPTY_MEMBER_ID);
 
         try{
 
-            GetProfileRes result = provider.getProfile(memberId);
+            GetProfileRes result = provider.getProfile(memberid);
 
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
@@ -186,15 +186,15 @@ public class MemberController {
     };
 
 
-    @GetMapping("/profile/{memberId}")
-    public BaseResponse<GetProfileForUpdateRes> getProfileForUpdate(@PathVariable Integer memberId){
+    @GetMapping("/profile/{memberid}")
+    public BaseResponse<GetProfileForUpdateRes> getProfileForUpdate(@PathVariable Integer memberid){
 
         // 유효성 검사 : 회원고유번호가 빈값인지
-        if(isEmpty(memberId))
+        if(isEmpty(memberid))
             return new BaseResponse<>(MEMBERS_EMPTY_MEMBER_ID);
 
         // 유효성 검사: 회원고유번호가 양수인지
-        if(!(checkIdFormal(memberId)))
+        if(!(checkIdFormal(memberid)))
             return new BaseResponse<>(INVALID_MEMBER);
 
         try{
@@ -202,12 +202,12 @@ public class MemberController {
             int memberIdByJwt = jwtService.getMemberId();
 
             // 유효성 검사: request로 받은 id와 추출한 id 비교
-            if(memberId != memberIdByJwt){
+            if(memberid != memberIdByJwt){
 
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-        GetProfileForUpdateRes res = provider.getProfileForUpdate(memberId);
+        GetProfileForUpdateRes res = provider.getProfileForUpdate(memberid);
 
 
          return new BaseResponse<>(res);
@@ -278,15 +278,15 @@ public class MemberController {
     }
 
 
-    @GetMapping("/manage/{memberId}")
-    public BaseResponse<GetManageInformationRes> getManageInformation(@PathVariable Integer memberId){
+    @GetMapping("/management/{memberid}")
+    public BaseResponse<GetManageInformationRes> getManageInformation(@PathVariable Integer memberid){
 
         // 유효성 검사 : 회원고유번호가 빈값인지
-        if(isEmpty(memberId))
+        if(isEmpty(memberid))
             return new BaseResponse<>(MEMBERS_EMPTY_MEMBER_ID);
 
         // 유효성 검사: 회원고유번호가 양수인지
-        if(!(checkIdFormal(memberId)))
+        if(!(checkIdFormal(memberid)))
             return new BaseResponse<>(INVALID_MEMBER);
 
 
@@ -298,12 +298,12 @@ public class MemberController {
             int memberIdByJwt = jwtService.getMemberId();
 
             // 유효성 검사: request로 받은 id와 추출한 id 비교
-            if(memberId != memberIdByJwt){
+            if(memberid != memberIdByJwt){
 
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            GetManageInformationRes res = provider.getManageInformation(memberId);
+            GetManageInformationRes res = provider.getManageInformation(memberid);
 
             return new BaseResponse<>(res);
 
@@ -316,7 +316,7 @@ public class MemberController {
     }
 
 
-    @PatchMapping("/manage")
+    @PatchMapping("/management")
     public BaseResponse<PatchManageInformationRes> patchManageInformation(@RequestBody PatchManageInformationReq req){
 
         // 유효성 검사 : 회원고유번호가 빈값인지
@@ -396,8 +396,8 @@ public class MemberController {
 
     // access token 받는 것 까지 ok
 
-    @PostMapping("/login/kakao")
-    public KakaoLoginRes kakaoLogin(@RequestParam("code") String code, HttpSession session) {
+    @GetMapping("/login/kakao")
+    public BaseResponse<KakaoLoginRes> kakaoLogin(@RequestParam("code") String code, HttpSession session) {
 
 
         KakaoLoginRes res  = new KakaoLoginRes();
@@ -407,20 +407,16 @@ public class MemberController {
         // 2번 인증코드로 토큰 전달
         HashMap<String, Object> userInfo = kakaoApi.getUserInfo(accessToken);
 
+        // 여기서 문제
         System.out.println("login info : " + userInfo.toString());
 
+        res.setId(String.valueOf(userInfo.get("id")));
+        res.setEmail(String.valueOf(userInfo.get("email")));
+        res.setNickname(String.valueOf(userInfo.get("nickname")));
+        res.setAccessToken(accessToken);
+        res.setCode(code);
 
-        if(userInfo.get("email") != null) {
-
-            res.setEmail(userInfo.get("email"));
-            res.setAccessToken(accessToken);
-
-        }
-
-
-        return res;
+        return new BaseResponse<>(res);
     }
-
-
 
 }

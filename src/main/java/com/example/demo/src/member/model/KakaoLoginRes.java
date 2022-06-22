@@ -13,8 +13,10 @@ import lombok.Setter;
 public class KakaoLoginRes {
 
     String nickname;
-    Object email;
+    String email;
     String accessToken;
+    String code;
+    String id;
 
 
 }
